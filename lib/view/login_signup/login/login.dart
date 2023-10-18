@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:test_app/view/home_screen/home_screen.dart';
 
+import '../../../core/constant/app_route.dart';
 import '../../../core/constant/colors.dart';
+import '../../../core/controller/login_sign_up_controller.dart';
+import '../../../core/utils/utils.dart';
 import '../../../widget/text_field/material_text_field.dart';
 import '../signup/signup.dart';
 
@@ -15,18 +19,36 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final LoginSignUpController _loginSignUpController =
+      Get.find<LoginSignUpController>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool showPassword = false;
+  bool _isLoading = false;
 
-  void _handleLogin() {
+  void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
-      print('Email: $email');
-      print('Password: $password');
-      Get.off(const HomeScreen());
-      // Add your login logic here
+
+      setState(() {
+        _isLoading = true;
+      });
+      String result = await _loginSignUpController.logInUser(
+        email: email,
+        password: password,
+      );
+      if (result == 'success') {
+        Utils.showSuccessSnackBar(
+            'Login Successful', 'Welcome back to the app');
+        Get.offNamed(AppRoutes.homeScreen);
+      } else {
+        Utils.showErrorSnackBar('issue with Login', result);
+      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -82,6 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value!.isEmpty) {
                       return 'Password is required';
                     }
+                    if (value.length < 6) {
+                      return 'Password is smaller than 6 digit';
+                    }
                     return null;
                   },
                 ),
@@ -113,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: _handleLogin,
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     primary: AppColors.buttonBackground,
                     elevation: 8,
@@ -125,14 +150,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       vertical: 10,
                     ),
                   ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      color: AppColors.textColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
+                          ),
+                        ),
                 ),
                 const SizedBox(height: 30.0),
                 const Text(
@@ -146,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10.0),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const SignUpScreen());
+                    Get.toNamed(AppRoutes.signUpScreen);
                   },
                   child: const Text(
                     "Sign Up",

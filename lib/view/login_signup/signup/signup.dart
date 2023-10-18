@@ -3,11 +3,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:test_app/core/constant/app_route.dart';
 
 import '../../../core/constant/colors.dart';
+import '../../../core/controller/login_sign_up_controller.dart';
+import '../../../core/utils/utils.dart';
 import '../../../widget/text_field/material_text_field.dart';
 import '../login/login.dart';
 
@@ -20,6 +24,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LoginSignUpController _loginSignUpController =
+      Get.find<LoginSignUpController>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -28,17 +34,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late PermissionStatus _galleryStatus;
   final picker = ImagePicker();
   bool showPassword = false;
+  bool _isLoading = false;
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
+  void _handleSignUp() async {
+    if (_formKey.currentState!.validate() && pickedImage != null) {
+      _formKey.currentState!.save();
+
       final name = nameController.text.trim();
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
+      final photoURL = pickedImage!.path;
 
-      print('Name: $name');
-      print('Email: $email');
-      print('Password: $password');
-      // Add your login logic here
+      setState(() {
+        _isLoading = true;
+      });
+      String result = await _loginSignUpController.signUpUser(
+          name: name, email: email, password: password, photoURL: photoURL);
+      if (result != 'success') {
+        Utils.showErrorSnackBar('issue with signing up', result);
+      } else {
+        Utils.showSuccessSnackBar(
+            'Sign Up Successful', 'Kindly login to go to the home screen');
+        Get.offNamed(AppRoutes.loginScreen);
+      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -242,12 +263,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value!.isEmpty) {
                         return 'Password is required';
                       }
+
+                      if (value.length < 6) {
+                        return 'Password is smaller than 6 digit';
+                      }
                       return null;
                     },
                   ),
                   const SizedBox(height: 20.0),
                   ElevatedButton(
-                    onPressed: _handleLogin,
+                    onPressed: _isLoading ? null : _handleSignUp,
                     style: ElevatedButton.styleFrom(
                       primary: AppColors.buttonBackground,
                       elevation: 8,
@@ -259,14 +284,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         vertical: 10,
                       ),
                     ),
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        color: AppColors.textColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17,
-                      ),
-                    ),
+                    child: _isLoading
+                        ? const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17,
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 30.0),
                   const Text(
@@ -280,7 +310,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () {
-                      Get.to(const LoginScreen());
+                      Get.toNamed(AppRoutes.loginScreen);
                     },
                     child: const Text(
                       "Login",

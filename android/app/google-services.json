@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "521060811471",
+    "project_id": "gorinsystems-3fbdd",
+    "storage_bucket": "gorinsystems-3fbdd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521060811471:android:3e28363f1bca8f89c3adba",
+        "android_client_info": {
+          "package_name": "com.test_1.test_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpoZ9H0Msa20hbwRuOh0fvT-HHQ9goSTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,6 +38,11 @@ dependencies:
   get: ^4.6.6
   image_picker: ^1.0.4
   permission_handler: ^11.0.1
+  shared_preferences: ^2.2.2
+  firebase_core: ^2.18.0
+  cloud_firestore: ^4.10.0
+  firebase_auth: ^4.11.0
+  firebase_storage: ^11.3.0
 
 dev_dependencies:
   flutter_test:
