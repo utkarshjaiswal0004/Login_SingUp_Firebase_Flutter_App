@@ -1,0 +1,207 @@
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:test_app/core/constant/colors.dart';
+import 'package:test_app/view/login_signup/signup/signup.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool showPassword = false;
+
+  void _handleLogin() {
+    if (_formKey.currentState!.validate()) {
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
+      print('Email: $email');
+      print('Password: $password');
+      // Add your login logic here
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Login With Email',
+                  style: TextStyle(
+                    color: AppColors.textColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 17,
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                buildMaterialTextField(
+                  controller: emailController,
+                  labelText: 'Email',
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Email is required';
+                    }
+                    if (!value.contains('@') || !value.contains('.')) {
+                      return 'Invalid email format';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                buildMaterialTextField(
+                  controller: passwordController,
+                  labelText: 'Password',
+                  obscureText: showPassword,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    child: Icon(
+                      showPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Password is required';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                GestureDetector(
+                  onTap: () {
+                    Get.dialog(
+                      const AlertDialog(
+                        title: Text(
+                          'Oops. The module is under development',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        backgroundColor: AppColors.background,
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Forgot Password ?',
+                    style: TextStyle(
+                      color: AppColors.textColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: _handleLogin,
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.buttonBackground,
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 10,
+                    ),
+                  ),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: AppColors.textColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30.0),
+                const Text(
+                  "Don't have an account",
+                  style: TextStyle(
+                    color: AppColors.textColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 17,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const SignUpScreen());
+                  },
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: AppColors.textColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildMaterialTextField({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    FormFieldValidator<String>? validator,
+  }) {
+    return SizedBox(
+      width: 350,
+      child: Material(
+        elevation: 10,
+        shadowColor: AppColors.buttonBackground,
+        borderRadius: BorderRadius.circular(10),
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: labelText,
+            filled: true,
+            fillColor: AppColors.white,
+            labelStyle: const TextStyle(
+              color: AppColors.textColor,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(
+                color: AppColors.white,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(
+                color: AppColors.avatarColor,
+              ),
+            ),
+            contentPadding: const EdgeInsets.all(15.0),
+            suffixIcon: suffixIcon,
+          ),
+          obscureText: obscureText,
+          validator: validator,
+        ),
+      ),
+    );
+  }
+}
