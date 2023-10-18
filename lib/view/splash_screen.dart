@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:test_app/view/home_screen/home_screen.dart';
 
 import '../core/constant/colors.dart';
 import 'login_signup/login/login.dart';
@@ -21,6 +22,6 @@ class SplashScreen extends StatelessWidget {
 
   checkLoginStatus() {
     //currently just redirecting
-    Get.off(const LoginScreen());
+    Get.off(const HomeScreen());
   }
 }

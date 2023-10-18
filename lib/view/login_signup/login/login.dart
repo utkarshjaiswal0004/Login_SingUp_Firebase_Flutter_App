@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:test_app/view/home_screen/home_screen.dart';
 
 import '../../../core/constant/colors.dart';
 import '../../../widget/text_field/material_text_field.dart';
@@ -24,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final password = passwordController.text.trim();
       print('Email: $email');
       print('Password: $password');
+      Get.off(const HomeScreen());
       // Add your login logic here
     }
   }
