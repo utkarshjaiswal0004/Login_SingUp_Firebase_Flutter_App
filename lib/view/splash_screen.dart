@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:test_app/core/constant/app_route.dart';
-import 'package:test_app/view/home_screen/home_screen.dart';
-import 'package:test_app/view/login_signup/login/login.dart';
 
 import '../core/constant/colors.dart';
 
@@ -13,7 +11,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //wait before redirecting to login signUp screen
-    Future.delayed(Durations.extralong1, () {
+    Future.delayed(Duration.zero, () {
       checkLoginStatus();
     });
     return const Scaffold(

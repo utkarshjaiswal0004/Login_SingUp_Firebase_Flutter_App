@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:test_app/core/constant/app_route.dart';
 import 'package:test_app/core/controller/login_sign_up_controller.dart';
-import 'package:test_app/view/login_signup/login/login.dart';
-import '../../core/constant/colors.dart';
+import 'package:test_app/core/service/user_service.dart';
+import 'package:test_app/core/constant/colors.dart';
+import 'package:test_app/core/model/user_model.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final LoginSignUpController _loginSignUpController =
       Get.find<LoginSignUpController>();
+  final UserService _userService = UserService();
+
+  @override
+  void dispose() {
+    _loginSignUpController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,49 +33,10 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-          bottom: 10,
-        ),
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemCount: 30,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            backgroundColor: AppColors.avatarColor,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Enter text here',
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (data) {},
-                              controller: TextEditingController(
-                                text: 'Initial Text',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        thickness: 1,
-                        color: AppColors.iconColor.withOpacity(0.5),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+            Expanded(child: UserListWidget(userService: _userService)),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
@@ -75,10 +49,8 @@ class HomeScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 10,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               ),
               child: const Text(
                 'Logout',
@@ -92,6 +64,107 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserListWidget extends StatelessWidget {
+  final UserService userService;
+
+  UserListWidget({required this.userService});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<UserModel>>(
+      stream: userService.listenToUserUpdates(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          List<UserModel> users = snapshot.data ?? [];
+
+          return ListView.separated(
+            itemCount: users.length,
+            separatorBuilder: (context, index) => Divider(
+              thickness: 1,
+              color: AppColors.iconColor.withOpacity(0.5),
+            ),
+            itemBuilder: (context, index) {
+              UserModel user = users[index];
+              return UserListItem(user: user, userService: userService);
+            },
+          );
+        } else {
+          return const Center(
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class UserListItem extends StatefulWidget {
+  final UserModel user;
+  final UserService userService;
+
+  UserListItem({required this.user, required this.userService});
+
+  @override
+  _UserListItemState createState() => _UserListItemState();
+}
+
+class _UserListItemState extends State<UserListItem> {
+  late TextEditingController nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.user.name);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.avatarColor,
+              backgroundImage: NetworkImage(widget.user.photoURL),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Enter text here',
+                  border: InputBorder.none,
+                ),
+                controller: nameController,
+                onChanged: (newName) async {
+                  await widget.userService
+                      .updateUserName(widget.user.uid, newName);
+                  setState(() {
+                    widget.user.name = newName;
+                  });
+                },
+                // onSubmitted: (newName) {
+                //   widget.userService.updateUserName(widget.user.uid, newName);
+                // },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

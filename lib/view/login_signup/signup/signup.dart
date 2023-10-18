@@ -8,7 +8,6 @@ import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_app/core/constant/app_route.dart';
-import 'package:test_app/view/login_signup/login/login.dart';
 
 import '../../../core/constant/colors.dart';
 import '../../../core/controller/login_sign_up_controller.dart';
@@ -318,7 +317,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () {
-                      Get.to(const LoginScreen());
+                      Get.toNamed(AppRoutes.loginScreen);
                     },
                     child: const Text(
                       "Login",

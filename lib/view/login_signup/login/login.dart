@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/view/login_signup/signup/signup.dart';
 import '../../../core/constant/app_route.dart';
 import '../../../core/constant/colors.dart';
 import '../../../core/controller/login_sign_up_controller.dart';
@@ -39,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (result == 'success') {
         Utils.showSuccessSnackBar(
             'Login Successful', 'Welcome back to the app');
-        Get.offNamed(AppRoutes.homeScreen);
+        Get.offAllNamed(AppRoutes.homeScreen);
       } else {
         Utils.showErrorSnackBar('issue with Login', result);
       }
@@ -180,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10.0),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const SignUpScreen());
+                    Get.toNamed(AppRoutes.signUpScreen);
                   },
                   child: const Text(
                     "Sign Up",
