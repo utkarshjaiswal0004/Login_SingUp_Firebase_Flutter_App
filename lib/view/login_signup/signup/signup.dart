@@ -8,12 +8,12 @@ import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_app/core/constant/app_route.dart';
+import 'package:test_app/view/login_signup/login/login.dart';
 
 import '../../../core/constant/colors.dart';
 import '../../../core/controller/login_sign_up_controller.dart';
 import '../../../core/utils/utils.dart';
 import '../../../widget/text_field/material_text_field.dart';
-import '../login/login.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -178,6 +178,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -310,7 +318,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.loginScreen);
+                      Get.to(const LoginScreen());
                     },
                     child: const Text(
                       "Login",

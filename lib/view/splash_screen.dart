@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:test_app/core/constant/app_route.dart';
 import 'package:test_app/view/home_screen/home_screen.dart';
 import 'package:test_app/view/login_signup/login/login.dart';
 
-import '../core/constant/app_route.dart';
 import '../core/constant/colors.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -22,13 +22,13 @@ class SplashScreen extends StatelessWidget {
     );
   }
 
-  Future<void> checkLoginStatus() async {
+  Future checkLoginStatus() async {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      Get.offNamed(AppRoutes.homeScreen);
+      Get.offAllNamed(AppRoutes.homeScreen);
     } else {
-      Get.off(AppRoutes.loginScreen);
+      Get.offNamed(AppRoutes.loginScreen);
     }
   }
 }

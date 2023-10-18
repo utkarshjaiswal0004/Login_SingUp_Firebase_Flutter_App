@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,16 +16,16 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
+    // if (kIsWeb) {
+    //   return web;
+    // }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        return macos;
+      // case TargetPlatform.iOS:
+      //   return ios;
+      // case TargetPlatform.macOS:
+      //   return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,15 +43,15 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB3IOtsMvsWl4njOi1D0_ZRjDou57IN8XY',
-    appId: '1:521060811471:web:d8e8054b3dec934bc3adba',
-    messagingSenderId: '521060811471',
-    projectId: 'gorinsystems-3fbdd',
-    authDomain: 'gorinsystems-3fbdd.firebaseapp.com',
-    storageBucket: 'gorinsystems-3fbdd.appspot.com',
-    measurementId: 'G-N7ZSSWFY92',
-  );
+  // static const FirebaseOptions web = FirebaseOptions(
+  //   apiKey: 'AIzaSyB3IOtsMvsWl4njOi1D0_ZRjDou57IN8XY',
+  //   appId: '1:521060811471:web:d8e8054b3dec934bc3adba',
+  //   messagingSenderId: '521060811471',
+  //   projectId: 'gorinsystems-3fbdd',
+  //   authDomain: 'gorinsystems-3fbdd.firebaseapp.com',
+  //   storageBucket: 'gorinsystems-3fbdd.appspot.com',
+  //   measurementId: 'G-N7ZSSWFY92',
+  // );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBpoZ9H0Msa20hbwRuOh0fvT-HHQ9goSTg',
@@ -61,21 +61,21 @@ class DefaultFirebaseOptions {
     storageBucket: 'gorinsystems-3fbdd.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDXcIYbeS2uqS73B4LT5I_zvLzEJLWfW20',
-    appId: '1:521060811471:ios:7682f73f9547e85cc3adba',
-    messagingSenderId: '521060811471',
-    projectId: 'gorinsystems-3fbdd',
-    storageBucket: 'gorinsystems-3fbdd.appspot.com',
-    iosBundleId: 'com.test1.testApp',
-  );
+  // static const FirebaseOptions ios = FirebaseOptions(
+  //   apiKey: 'AIzaSyDXcIYbeS2uqS73B4LT5I_zvLzEJLWfW20',
+  //   appId: '1:521060811471:ios:7682f73f9547e85cc3adba',
+  //   messagingSenderId: '521060811471',
+  //   projectId: 'gorinsystems-3fbdd',
+  //   storageBucket: 'gorinsystems-3fbdd.appspot.com',
+  //   iosBundleId: 'com.test1.testApp',
+  // );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDXcIYbeS2uqS73B4LT5I_zvLzEJLWfW20',
-    appId: '1:521060811471:ios:b1eaa48b2a6afaa9c3adba',
-    messagingSenderId: '521060811471',
-    projectId: 'gorinsystems-3fbdd',
-    storageBucket: 'gorinsystems-3fbdd.appspot.com',
-    iosBundleId: 'com.test1.testApp.RunnerTests',
-  );
+  // static const FirebaseOptions macos = FirebaseOptions(
+  //   apiKey: 'AIzaSyDXcIYbeS2uqS73B4LT5I_zvLzEJLWfW20',
+  //   appId: '1:521060811471:ios:b1eaa48b2a6afaa9c3adba',
+  //   messagingSenderId: '521060811471',
+  //   projectId: 'gorinsystems-3fbdd',
+  //   storageBucket: 'gorinsystems-3fbdd.appspot.com',
+  //   iosBundleId: 'com.test1.testApp.RunnerTests',
+  // );
 }

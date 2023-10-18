@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:test_app/core/constant/app_route.dart';
 import 'package:test_app/core/controller/login_sign_up_controller.dart';
 import 'package:test_app/view/login_signup/login/login.dart';
 import '../../core/constant/colors.dart';
@@ -66,7 +67,7 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await _loginSignUpController.logOut();
-                Get.offAllNamed('/login');
+                Get.offAllNamed(AppRoutes.loginScreen);
               },
               style: ElevatedButton.styleFrom(
                 primary: AppColors.buttonBackground,

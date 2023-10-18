@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
-import 'package:test_app/view/home_screen/home_screen.dart';
-
+import 'package:test_app/view/login_signup/signup/signup.dart';
 import '../../../core/constant/app_route.dart';
 import '../../../core/constant/colors.dart';
 import '../../../core/controller/login_sign_up_controller.dart';
 import '../../../core/utils/utils.dart';
 import '../../../widget/text_field/material_text_field.dart';
-import '../signup/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -50,6 +47,13 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -176,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10.0),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(AppRoutes.signUpScreen);
+                    Get.to(const SignUpScreen());
                   },
                   child: const Text(
                     "Sign Up",

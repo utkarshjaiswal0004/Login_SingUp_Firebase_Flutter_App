@@ -1,8 +1,8 @@
+import 'package:test_app/core/constant/app_route.dart';
 import 'package:test_app/view/home_screen/home_screen.dart';
 import 'package:test_app/view/login_signup/login/login.dart';
 import 'package:test_app/view/login_signup/signup/signup.dart';
 
-import 'core/constant/app_route.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,17 +27,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Firebase Login SignUp',
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Firebase Login SignUp',
       theme: ThemeData(
         useMaterial3: true,
       ),
       routes: {
         AppRoutes.loginScreen: (context) => const LoginScreen(),
-        AppRoutes.signUpScreen: (context) => const SignUpScreen(),
         AppRoutes.homeScreen: (context) => HomeScreen(),
+        AppRoutes.signUpScreen: (context) => const SignUpScreen(),
+        AppRoutes.splashScreen: (context) => const SplashScreen(),
       },
-      home: const SplashScreen(),
+      initialRoute: AppRoutes.splashScreen,
     );
   }
 }
