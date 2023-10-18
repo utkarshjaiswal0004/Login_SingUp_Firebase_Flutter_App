@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:test_app/view/splash_screen.dart';
+
+import 'view/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
