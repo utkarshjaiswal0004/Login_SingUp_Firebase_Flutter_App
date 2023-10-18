@@ -52,6 +52,7 @@ class LoginSignUpService {
     required String password,
   }) async {
     try {
+      print(email + '  ' + password);
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return 'success';
     } catch (e) {

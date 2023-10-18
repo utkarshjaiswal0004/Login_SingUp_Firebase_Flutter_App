@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_app/core/constant/app_route.dart';
@@ -36,7 +35,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isLoading = false;
 
   void _handleSignUp() async {
-    if (_formKey.currentState!.validate() && pickedImage != null) {
+    if (pickedImage == null) {
+      Utils.showErrorSnackBar('Image not selected', 'Please select an image.');
+      return;
+    }
+
+    if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       final name = nameController.text.trim();
@@ -48,9 +52,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _isLoading = true;
       });
       String result = await _loginSignUpController.signUpUser(
-          name: name, email: email, password: password, photoURL: photoURL);
+        name: name,
+        email: email,
+        password: password,
+        photoURL: photoURL,
+      );
       if (result != 'success') {
-        Utils.showErrorSnackBar('issue with signing up', result);
+        Utils.showErrorSnackBar('Issue with signing up', result);
       } else {
         Utils.showSuccessSnackBar(
             'Sign Up Successful', 'Kindly login to go to the home screen');
@@ -114,6 +122,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
       }
     } else if (status.isDenied) {
+      if (source == ImageSource.camera) {
+        await _askCameraPermission();
+      } else {
+        await _askPhotoPermission();
+      }
       _showPermissionDeniedDialog();
     }
   }
