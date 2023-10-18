@@ -3,8 +3,8 @@ import 'package:get/route_manager.dart';
 import 'package:test_app/core/constant/colors.dart';
 import 'package:test_app/view/login_signup/login/login.dart';
 
-class LandingScreen extends StatelessWidget {
-  const LandingScreen({super.key});
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
