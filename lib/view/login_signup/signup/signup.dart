@@ -29,7 +29,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
   XFile? pickedImage;
   late PermissionStatus _cameraStatus;
-  late PermissionStatus _galleryStatus;
   final picker = ImagePicker();
   bool showPassword = false;
   bool _isLoading = false;
@@ -111,9 +110,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final status = (source == ImageSource.camera)
-        ? _cameraStatus
-        : _galleryStatus; // Request camera / gallery access
+    final status = _cameraStatus;
+
+    // Request camera / gallery access
     if (status.isGranted) {
       pickedImage = await picker.pickImage(source: source);
       if (pickedImage != null) {
@@ -124,51 +123,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else if (status.isDenied) {
       if (source == ImageSource.camera) {
         await _askCameraPermission();
-      } else {
-        await _askPhotoPermission();
       }
-      _showPermissionDeniedDialog();
     }
-  }
-
-  void _showPermissionDeniedDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Permission Denied'),
-          content: const Text(
-              'Please enable camera/gallery permissions in your device settings.'),
-          actions: <Widget>[
-            _buildDialogTextButton('Open Settings', () {
-              openAppSettings();
-              Navigator.of(context).pop();
-            }),
-            _buildDialogTextButton('Cancel', () {
-              Navigator.of(context).pop();
-            }),
-          ],
-        );
-      },
-    );
-  }
-
-  TextButton _buildDialogTextButton(String label, VoidCallback onPressed) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(label),
-    );
-  }
-
-  // Function to check the status of the gallery permission
-  Future<void> _askPhotoPermission() async {
-    var status = await Permission.photos.status;
-    if (status.isDenied) {
-      status = await Permission.photos.request();
-    }
-    setState(() {
-      _galleryStatus = status;
-    });
   }
 
   // Function to request gallery permission
@@ -185,7 +141,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-    _askPhotoPermission();
     _askCameraPermission();
   }
 
