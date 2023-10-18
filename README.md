@@ -1,16 +1,11 @@
-# test_app
+# Flutter Firebase App - Login, SingUp and Dashboard Screen
 
-A new Flutter project.
+  This is just a basic app having features of Real Time Read Write Operation in Dashboard Screen from firebase, login with email page and a signUp page
 
-## Getting Started
+   => Login page holds a error handling email password login system
 
-This project is a starting point for a Flutter application.
+   => SignUp screen require gallery/camera access for image upload, name field, email field and password field for signing up
 
-A few resources to get you started if this is your first Flutter project:
+   => The dashboard holds the list of user in the user collection of firebase is having a feature of real time update to the name of the user present in the database
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+   => This app follows GetX for routing and managing its state through out the app
