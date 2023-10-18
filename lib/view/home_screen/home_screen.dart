@@ -79,20 +79,30 @@ class UserListWidget extends StatelessWidget {
       stream: userService.listenToUserUpdates(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          List<UserModel> users = snapshot.data ?? [];
+          if (snapshot.hasData) {
+            List<UserModel> users = snapshot.data!;
 
-          return ListView.separated(
-            itemCount: users.length,
-            separatorBuilder: (context, index) => Divider(
-              thickness: 1,
-              color: AppColors.iconColor.withOpacity(0.5),
-            ),
-            itemBuilder: (context, index) {
-              UserModel user = users[index];
-              return UserListItem(user: user, userService: userService);
-            },
-          );
+            return ListView.separated(
+              itemCount: users.length,
+              separatorBuilder: (context, index) => Divider(
+                thickness: 1,
+                color: AppColors.iconColor.withOpacity(0.5),
+              ),
+              itemBuilder: (context, index) {
+                UserModel user = users[index];
+
+                return UserListItem(user: user, userService: userService);
+              },
+            );
+          } else {
+            // Handle the case where there's no data yet.
+            return const Center(child: Text("No users found"));
+          }
+        } else if (snapshot.hasError) {
+          // Handle errors.
+          return Center(child: Text("Error: ${snapshot.error}"));
         } else {
+          // Loading state.
           return const Center(
             child: SizedBox(
               width: 100,
@@ -133,6 +143,9 @@ class _UserListItemState extends State<UserListItem> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      nameController.text = widget.user.name;
+    });
     return Column(
       children: [
         Row(
@@ -153,13 +166,7 @@ class _UserListItemState extends State<UserListItem> {
                 onChanged: (newName) async {
                   await widget.userService
                       .updateUserName(widget.user.uid, newName);
-                  setState(() {
-                    widget.user.name = newName;
-                  });
                 },
-                // onSubmitted: (newName) {
-                //   widget.userService.updateUserName(widget.user.uid, newName);
-                // },
               ),
             ),
           ],

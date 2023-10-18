@@ -1,25 +1,11 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/user_model.dart';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  // Future<List<UserModel>> fetchAllUsers() async {
-  //   try {
-  //     final QuerySnapshot usersSnapshot =
-  //         await _firestore.collection('users').get();
-  //     List<UserModel> users = [];
-
-  //     for (var userDoc in usersSnapshot.docs) {
-  //       users.add(UserModel.fromJson(userDoc.data() as Map<String, dynamic>));
-  //     }
-
-  //     return users;
-  //   } catch (e) {
-  //     throw Exception('Error fetching users: $e');
-  //   }
-  // }
 
   Future<void> updateUserName(String userId, String newName) async {
     try {
@@ -34,15 +20,34 @@ class UserService {
 
   Stream<List<UserModel>> listenToUserUpdates() {
     final CollectionReference usersCollection = _firestore.collection('users');
+    List<UserModel> users = [];
 
-    return usersCollection.snapshots().map((querySnapshot) {
-      List<UserModel> users = [];
+    final userUpdatesController = StreamController<List<UserModel>>();
 
-      for (var userDoc in querySnapshot.docs) {
-        users.add(UserModel.fromJson(userDoc.data() as Map<String, dynamic>));
+    usersCollection.snapshots().listen((event) {
+      for (var change in event.docChanges) {
+        switch (change.type) {
+          case DocumentChangeType.added:
+            users.add(
+                UserModel.fromJson(change.doc.data() as Map<String, dynamic>));
+            break;
+          case DocumentChangeType.modified:
+            int modifiedUserIndex =
+                users.indexWhere((user) => user.uid == change.doc.id);
+            if (modifiedUserIndex != -1) {
+              users[modifiedUserIndex] =
+                  UserModel.fromJson(change.doc.data() as Map<String, dynamic>);
+            }
+            break;
+          case DocumentChangeType.removed:
+            users.removeWhere((user) => user.uid == change.doc.id);
+            break;
+        }
       }
 
-      return users;
+      userUpdatesController.add(List<UserModel>.from(users));
     });
+
+    return userUpdatesController.stream;
   }
 }
