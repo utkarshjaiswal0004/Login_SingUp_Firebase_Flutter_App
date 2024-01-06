@@ -1,4 +1,4 @@
-# Flutter Firebase App - Login, SingUp and Dashboard Screen
+# Flutter Firebase App - Login, SingUp and Dashboard Screen Test For Gorrin System (Created in 5 hours)
 
   This is just a basic app having features of Real Time Read Write Operation in Dashboard Screen from firebase, login with email page and a signUp page
 
