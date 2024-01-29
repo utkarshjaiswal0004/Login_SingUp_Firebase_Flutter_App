@@ -17,7 +17,7 @@ This application is designed to provide essential features, including real-time 
 - Includes fields for the user's name, email, and password to facilitate a comprehensive signup process.
 - App Signup Image
 
-<img src="./signup" alt="App Signup Image" width="300"/>
+<img src="./signup.jpg" alt="App Signup Image" width="300"/>
 
 
 
@@ -32,7 +32,7 @@ This application is designed to provide essential features, including real-time 
 
 - App User Edit Image
 
-<img src="./edit" alt="App Users List Real Time Edit Image" width="300"/>
+<img src="./edit.jpg" alt="App Users List Real Time Edit Image" width="300"/>
 
 
 ## Implementation Details:
