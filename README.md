@@ -9,7 +9,7 @@ This application is designed to provide essential features, including real-time 
 - Implements a robust email-password login system with error handling for a secure authentication process.
 - App Login Image
 
-![App Login Image](./login.jpg)
+<img src="./login.jpg" alt="App Login Image" width="300"/>
 
 ### SignUp Screen:
 
@@ -17,7 +17,7 @@ This application is designed to provide essential features, including real-time 
 - Includes fields for the user's name, email, and password to facilitate a comprehensive signup process.
 - App Signup Image
 
-<img src="./login.jpg" alt="App Signup Image" width="300"/>
+<img src="./signup" alt="App Signup Image" width="300"/>
 
 
 
@@ -27,12 +27,12 @@ This application is designed to provide essential features, including real-time 
 - Utilizes GetX for efficient routing and state management throughout the application.
 - App Users List Image
 
-![App Login Image](./users.jpg)
+<img src="./users.jpg" alt="App Users List on Dashboard Image" width="300"/>
 
 
 - App User Edit Image
 
-![App Login Image](./edit.jpg)
+<img src="./edit" alt="App Users List Real Time Edit Image" width="300"/>
 
 
 ## Implementation Details:
