@@ -17,7 +17,8 @@ This application is designed to provide essential features, including real-time 
 - Includes fields for the user's name, email, and password to facilitate a comprehensive signup process.
 - App Signup Image
 
-![App signup Image](./login.jpg)
+<img src="./login.jpg" alt="App Signup Image" width="300"/>
+
 
 
 ### Dashboard:
